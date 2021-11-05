@@ -6,29 +6,45 @@
 /*   By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 05:09:33 by lzaccome          #+#    #+#             */
-/*   Updated: 2021/10/29 06:30:46 by lzaccome         ###   ########.fr       */
+/*   Updated: 2021/11/05 02:40:50 by lzaccome         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
-static char			**part_cases(char const *s)
+void	free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+	return ;
+}
+
+static char	**part_cases(char const *s)
 {
 	char			**spl;
 
 	if (!s)
 		return (NULL);
-	if (!(spl = malloc(sizeof(char *))))
+	spl = malloc(sizeof(char *));
+	if (!spl)
 		return (NULL);
-	if (!(spl[0] = malloc(sizeof(char))))
+	spl[0] = malloc(sizeof(char));
+	if (!(spl[0]))
 		return (NULL);
 	spl[0] = NULL;
 	return (spl);
 }
 
-static char			**free_all(char **spl, unsigned int j)
+static char	**free_all(char **spl, unsigned int j)
 {
 	unsigned int	i;
 
@@ -63,7 +79,7 @@ static unsigned int	get_word_count(char const *s, char c)
 	return (count);
 }
 
-static char			*fill_strs(char const *s, char c, unsigned int *i)
+static char	*fill_strs(char const *s, char c, unsigned int *i)
 {
 	int		j;
 	char	*str;
@@ -71,7 +87,8 @@ static char			*fill_strs(char const *s, char c, unsigned int *i)
 	j = 0;
 	while (s[j + *i] && s[j + *i] != c)
 		j++;
-	if (!(str = malloc(sizeof(char) * (j + 1))))
+	str = malloc(sizeof(char) * (j + 1));
+	if (!str)
 		return (NULL);
 	j = 0;
 	while (s[*i] && s[*i] != c)
@@ -85,7 +102,30 @@ static char			*fill_strs(char const *s, char c, unsigned int *i)
 	return (str);
 }
 
-char				**ft_split(char const *s, char c)
+char	**bc_malloc_norm(unsigned int wdct, char c, char **spl, char const *s)
+{
+	unsigned int	i;
+	unsigned int	j;
+
+	i = 0;
+	j = 0;
+	while (j < wdct)
+	{
+		while (s[i] == c)
+			i++;
+		if (s[i])
+		{
+			spl[j] = fill_strs(s, c, &i);
+			if (!spl)
+				return (free_all(spl, j));
+		}
+		j++;
+	}
+	spl[j] = NULL;
+	return (spl);
+}
+
+char	**ft_split(char const *s, char c)
 {
 	unsigned int	wdct;
 	char			**spl;
@@ -95,19 +135,10 @@ char				**ft_split(char const *s, char c)
 	if (!s || s[0] == '\0')
 		return (part_cases(s));
 	wdct = get_word_count(s, c);
-	if (!(spl = malloc(sizeof(char *) * (wdct + 1))))
+	spl = malloc(sizeof(char *) * (wdct + 1));
+	if (!spl)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (j < wdct)
-	{
-		while (s[i] == c)
-			i++;
-		if (s[i])
-			if (!(spl[j] = fill_strs(s, c, &i)))
-				return (free_all(spl, j));
-		j++;
-	}
-	spl[j] = NULL;
-	return (spl);
+	return (bc_malloc_norm(wdct, c, spl, s));
 }

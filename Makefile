@@ -6,18 +6,19 @@
 #    By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/16 15:37:56 by lzaccome          #+#    #+#              #
-#    Updated: 2021/11/03 03:36:06 by lzaccome         ###   ########.fr        #
+#    Updated: 2021/11/04 20:52:49 by lzaccome         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
-CC = @gcc
+CC = clang
 
-CFLAGS =  -Wall -Wextra -Werror -I proto.h -g3 -fsanitize=address
+CFLAGS =  -Wall -Wextra -Werror -I proto.h #-g3 -fsanitize=address
 
 SRCS =	split.c \
 		main.c \
+		utils.c
 
 _GREY=	$'\033[1;30m
 _RED=	$'\033[1;31m

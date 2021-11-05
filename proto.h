@@ -6,7 +6,7 @@
 /*   By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 12:52:24 by rmechety          #+#    #+#             */
-/*   Updated: 2021/11/03 01:27:23 by lzaccome         ###   ########.fr       */
+/*   Updated: 2021/11/04 20:53:47 by lzaccome         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@
 /* -------------------------------------------------------------------------- */
 /*                              FILE = ./main.c                               */
 /* -------------------------------------------------------------------------- */
-size_t	strlen(const char *s);
 char	*cat_cmd(char *split, char *cmd);
-int		ft_strncmp(char *s1, char *s2, unsigned int n);
 char	*cmd_search(char **envp, char *argv);
 int		main(int argc, char **argv, char **envp);
 
@@ -29,5 +27,11 @@ int		main(int argc, char **argv, char **envp);
 /* -------------------------------------------------------------------------- */
 char	**ft_split(char const *s, char c);
 void	free_split(char **split);
+
+/* -------------------------------------------------------------------------- */
+/*                              FILE = ./utils.c                            */
+/* -------------------------------------------------------------------------- */
+int	ft_strncmp(char *s1, char *s2, unsigned int n);
+size_t	strlen(const char *s);
 
 #endif

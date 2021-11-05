@@ -6,35 +6,11 @@
 /*   By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 18:53:25 by lzaccome          #+#    #+#             */
-/*   Updated: 2021/11/03 04:03:13 by lzaccome         ###   ########.fr       */
+/*   Updated: 2021/11/04 22:04:15 by lzaccome         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "proto.h"
-
-size_t	strlen(const char *s)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-void	free_split(char **split)
-{
-	int i;
-
-	i = 0;
-	while(split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-	return;
-}
 
 void	error(void)
 {
@@ -65,21 +41,6 @@ char	*cat_cmd(char *split, char *cmd)
 	return (ret);
 }
 
-int	ft_strncmp(char *s1, char *s2, unsigned int n)
-{
-	unsigned int	i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	if (s1 == NULL || s2 == NULL)
-		return (-1);
-	while (s1[i] && s2[i] && (unsigned char)s1[i] == (unsigned char)s2[i]
-		&& i < (n - 1))
-		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
 char	*cmd_search(char **envp, char *argv)
 {
 	int		i;
@@ -89,6 +50,8 @@ char	*cmd_search(char **envp, char *argv)
 
 	i = 0;
 	str = NULL;
+	path_cmd = NULL;
+	split = NULL;
 	if (!envp)
 		return (NULL);
 	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
@@ -98,18 +61,29 @@ char	*cmd_search(char **envp, char *argv)
 	if (str)
 	{
 		split = ft_split((str + 5), ':');
+		if (!split)
+		{
+			free(split);
+			error();
+		}
 		i = 0;
 		while (split && split[i])
 		{
 			path_cmd = cat_cmd(split[i], argv);
 			if (!path_cmd)
+			{
+				free_split(split);
 				error();
-			if (!access(path_cmd, F_OK))
+			}
+			if (!access(path_cmd, X_OK))
 				return (path_cmd);
+			free(path_cmd);
+			path_cmd = NULL;
 			i++;
 		}
 	}
-	error();
+	free(path_cmd);
+	free_split(split);
 	return (NULL);
 }
 
@@ -122,6 +96,11 @@ void	exec_cmd(char **envp, char *argv_n)
 	if (!cmd)
 		error();
 	path_cmd = cmd_search(envp, cmd[0]);
+	if (!path_cmd)
+	{
+		free_split(cmd);
+		error();
+	}
 	execve(path_cmd, cmd, envp);
 	free(path_cmd);
 	free_split(cmd);
@@ -137,15 +116,13 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 5)
 	{
 		write(2 , "Wrong number of arguments \n", 28);
-		return 0;		
+		error();
 	} 
 	if (pipe(fd) == -1)
-		return (0);
-
+		error();
 	int pid1 = fork();
 	if (pid1 < 0)
-		return 0;
-
+		error();
 	if (pid1 == 0)
 	{
 		file1 = open(argv[1], O_RDONLY);
@@ -155,8 +132,8 @@ int	main(int argc, char **argv, char **envp)
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
-		exec_cmd(envp, argv[2]);
 		close(file1);
+		exec_cmd(envp, argv[2]);
 	}
 
 	int pid2 = fork();
@@ -165,15 +142,15 @@ int	main(int argc, char **argv, char **envp)
 
 	if (pid2 == 0)
 	{
-		file2 = open(argv[4], O_WRONLY | O_CREAT | S_IRWXU, 777);
+		file2 = open(argv[4], O_WRONLY | O_CREAT, 777);
 		if (file2 == -1)
 			error();
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		dup2(file2, STDOUT_FILENO);
 		close(fd[1]);
-		exec_cmd(envp, argv[3]);
 		close(file2);
+		exec_cmd(envp, argv[3]);
 	}
 
 	close(fd[0]);
