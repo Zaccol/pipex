@@ -1,22 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/29 10:03:26 by lzaccome          #+#    #+#             */
-/*   Updated: 2021/11/04 02:25:48 by lzaccome         ###   ########.fr       */
+/*   Created: 2021/11/05 03:15:09 by lzaccome          #+#    #+#             */
+/*   Updated: 2021/11/06 05:03:11 by lzaccome         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "../includes/proto.h"
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <sys/wait.h>
+void	free_split(char **split)
+{
+	int	i;
 
-#endif
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+	return ;
+}
+
+char	**free_all(char **spl, unsigned int j)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < j)
+	{
+		free(spl[i]);
+		i++;
+	}
+	free(spl);
+	return (NULL);
+}

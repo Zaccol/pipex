@@ -6,7 +6,7 @@
 #    By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/16 15:37:56 by lzaccome          #+#    #+#              #
-#    Updated: 2021/11/04 20:52:49 by lzaccome         ###   ########.fr        #
+#    Updated: 2021/11/06 05:04:55 by lzaccome         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,14 @@ NAME = pipex
 
 CC = clang
 
-CFLAGS =  -Wall -Wextra -Werror -I proto.h #-g3 -fsanitize=address
+CFLAGS =  -Wall -Wextra -Werror -I proto.h -g3 -fsanitize=address
 
-SRCS =	split.c \
-		main.c \
-		utils.c
+SRCS =	srcs/split.c \
+		srcs/split2.c \
+		srcs/main.c \
+		srcs/path_env.c \
+		srcs/error.c \
+		srcs/utils.c
 
 _GREY=	$'\033[1;30m
 _RED=	$'\033[1;31m
@@ -43,7 +46,7 @@ $(NAME): $(OBJ)
 
 %o: %.c
 	$(CC) $(FLAGS) -o $@ -c $< -I includes
-
+	
 clean:
 	@rm -f $(OBJ)
 	@echo "$(_RED)[All .o removed]"

@@ -6,11 +6,11 @@
 /*   By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 20:47:31 by lzaccome          #+#    #+#             */
-/*   Updated: 2021/11/04 20:53:08 by lzaccome         ###   ########.fr       */
+/*   Updated: 2021/11/06 05:03:25 by lzaccome         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "proto.h"
+#include "../includes/proto.h"
 
 int	ft_strncmp(char *s1, char *s2, unsigned int n)
 {

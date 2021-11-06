@@ -6,27 +6,11 @@
 /*   By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 05:09:33 by lzaccome          #+#    #+#             */
-/*   Updated: 2021/11/05 02:40:50 by lzaccome         ###   ########.fr       */
+/*   Updated: 2021/11/06 05:03:14 by lzaccome         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-void	free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-	return ;
-}
+#include "../includes/proto.h"
 
 static char	**part_cases(char const *s)
 {
@@ -42,20 +26,6 @@ static char	**part_cases(char const *s)
 		return (NULL);
 	spl[0] = NULL;
 	return (spl);
-}
-
-static char	**free_all(char **spl, unsigned int j)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < j)
-	{
-		free(spl[i]);
-		i++;
-	}
-	free(spl);
-	return (NULL);
 }
 
 static unsigned int	get_word_count(char const *s, char c)
