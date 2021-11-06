@@ -6,7 +6,7 @@
 /*   By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 18:53:25 by lzaccome          #+#    #+#             */
-/*   Updated: 2021/11/06 05:03:07 by lzaccome         ###   ########.fr       */
+/*   Updated: 2021/11/06 15:00:17 by lzaccome         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ void	exec_cmd(char **envp, char *argv_n)
 
 	search = NULL;
 	split = NULL;
+	while (*argv_n == ' ')
+		argv_n++;
+	if (*argv_n == '\0')
+		error();
 	cmd = ft_split(argv_n, ' ');
 	if (!cmd)
 		error();
@@ -78,7 +82,7 @@ void	read_from_pipe(int *fd, char **argv, char **envp)
 {
 	int	file2;
 
-	file2 = open(argv[4], O_WRONLY | O_CREAT, 777);
+	file2 = open(argv[4], O_WRONLY | O_CREAT, 0666);
 	if (file2 == -1)
 		error();
 	dup2(fd[0], STDIN_FILENO);
@@ -95,7 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	int		pid1;
 	int		pid2;
 
-	if (argc != 5)
+	if (argc != 5 || (*argv[2] == 0) || (*argv[3] == 0))
 		wrong_number_arg();
 	if (pipe(fd) == -1)
 		error();

@@ -6,7 +6,7 @@
 /*   By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 05:09:33 by lzaccome          #+#    #+#             */
-/*   Updated: 2021/11/06 05:03:14 by lzaccome         ###   ########.fr       */
+/*   Updated: 2021/11/06 14:56:19 by lzaccome         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,15 +100,13 @@ char	**ft_split(char const *s, char c)
 	unsigned int	wdct;
 	char			**spl;
 	unsigned int	i;
-	unsigned int	j;
 
+	i = 0;
 	if (!s || s[0] == '\0')
 		return (part_cases(s));
 	wdct = get_word_count(s, c);
 	spl = malloc(sizeof(char *) * (wdct + 1));
 	if (!spl)
 		return (NULL);
-	i = 0;
-	j = 0;
 	return (bc_malloc_norm(wdct, c, spl, s));
 }
