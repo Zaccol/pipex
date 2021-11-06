@@ -6,7 +6,7 @@
 #    By: lzaccome <lzaccome@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/16 15:37:56 by lzaccome          #+#    #+#              #
-#    Updated: 2021/11/06 05:04:55 by lzaccome         ###   ########.fr        #
+#    Updated: 2021/11/06 05:10:29 by lzaccome         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 
 CC = clang
 
-CFLAGS =  -Wall -Wextra -Werror -I proto.h -g3 -fsanitize=address
+CFLAGS =  -Wall -Wextra -Werror -I proto.h #-g3 -fsanitize=address
 
 SRCS =	srcs/split.c \
 		srcs/split2.c \
